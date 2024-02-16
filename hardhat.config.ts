@@ -11,14 +11,37 @@ const AlchemyUrl: string = process.env.ALCHEMY_RPC_URL || "";
 
 const config: HardhatUserConfig = {
   solidity: {
-    version: "0.8.20",
-    settings: {
-      optimizer: {
-        enabled: true,
-        runs: 200,
+ 
+
+      compilers: [
+      {
+        version: "0.8.20",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 200,
+          },
+
+        },
+      },{
+        version: "0.8.12",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 10000,
+          },
+        },
       },
-      viaIR: false,
-    },
+      {
+        version: "0.8.17",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 10000,
+          },
+        },
+      }
+    ],
   },
   networks: {
     goerli: {
