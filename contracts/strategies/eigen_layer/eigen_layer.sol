@@ -5,9 +5,6 @@ import {StrategyBase} from "../StrategyBase.sol";
 
 contract EigenLayerStrategy is StrategyBase {
     IStETH public stETH;
-    IRestakeManager public restakeManager;
-
-    address public constant RESTAKE_MANAGER = 0x123;
 
     function initialize(
         address _poolingManager,
