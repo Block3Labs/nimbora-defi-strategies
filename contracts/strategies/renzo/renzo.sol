@@ -3,9 +3,13 @@ pragma solidity ^0.8.20;
 
 import {StrategyBase} from "../StrategyBase.sol";
 import "../../interfaces/IStETH.sol";
+import "../../interfaces/renzo/IRestakeManager.sol";
 
 contract RenzoStrategy is StrategyBase {
     IStETH public stETH;
+    IRestakeManager public restakeManager;
+
+    address public constant RESTAKE_MANAGER = 0x123;
 
     function initialize(
         address _poolingManager,
@@ -20,11 +24,14 @@ contract RenzoStrategy is StrategyBase {
         require(address(this).balance != 0, "ZERO_DEPOSIT");
         // Submit to LIDO
         // https://docs.lido.fi/contracts/lido#submit-1
-        IStETH(STETH).submit(address(0));
+        stETH = IStETH(STETH);
+        stETH.submit(address(0));
         // Call RestakeManager.deposit(IERC20 _collateralToken, uint256 _amount, uint256 _referralId)
         // _collateralToken: stETH address
         // The msg.sender must pre-approve this contract to move the tokens into the protocol
         // https://github.com/Renzo-Protocol/contracts-public/blob/master/contracts/RestakeManager.sol
+        restakeManager = IRestakeManager();
+        restakeManager.deposit(yieldToken, amount);
     }
 
     function _withdraw(uint256 amount) internal override returns (uint256) {}
